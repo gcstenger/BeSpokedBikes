@@ -1,0 +1,18 @@
+* {
+    box-sizing: border-box;
+  }
+.Form ul {
+  list-style-type: none;
+  width: 90%;
+  display: table;
+  table-layout: fixed;
+}
+.Form li:first-child {
+  display: table-cell;
+  width: 20%;
+  vertical-align: top;
+}
+.Form li:nth-child(2) {
+  display: table-cell;
+  width: 80%;
+}

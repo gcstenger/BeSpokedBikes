@@ -1,0 +1,16 @@
+* {
+    box-sizing: border-box;
+  }
+.List ul {
+  list-style-type: none;
+  width: 100%;
+  display: table;
+  table-layout: fixed;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+.List li {
+  display: table-cell;
+  width: 25%;
+  border-right: 1px solid #ccc;
+}
