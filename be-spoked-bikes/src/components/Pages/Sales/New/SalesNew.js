@@ -11,6 +11,11 @@ import "react-datepicker/dist/react-datepicker.css";
 class SalesEdit extends Component {
 
     state = {
+        id: 0,
+        product: null,
+        customer: null,
+        salesperson: null,
+        salesDate: null,
         products: null,
         customers: null,
         salespersons: null,
@@ -48,16 +53,20 @@ class SalesEdit extends Component {
                 this.setState({ error: true })
             });
     }
+
+    productChangeHandler = (event) => {
+        this.setState({ product: event.target.value });
+    }
+
+    customerChangeHandler = (event) => {
+        this.setState({ customer: event.target.value });
+    }
+
+    salespersonChangeHandler = (event) => {
+        this.setState({ salesperson: event.target.value });
+    }
+
     inputChangeHandler = (event, id) => {
-        // var stateObject = function() {
-        //     let returnObj = {
-        //         ...this.state
-        //     };
-        //     returnObj[this.target.name] = this.target.value;
-        //        return returnObj;
-        //   }.bind(event)();
-        // console.log(this.state);
-        // this.setState({ stateObject })
         console.log(this.state);
         console.log(id);
         //this.setState({ [event.target.name]: event.target.value});
@@ -74,27 +83,28 @@ class SalesEdit extends Component {
         this.setState({ sales: updatedSale });
     }
 
-    submitHandler = ( event ) => {
-        this.state.inputs.map( function(item, i) {
-          console.log(ReactDOM.findDOMNode(this.refs['input-' + i]).value);
-        }.bind(this))
+    salesdateChangeHandler = (date) => {
+        this.setState({ salesDate: date });
+    }
 
+    submitHandler = ( event ) => {
         event.preventDefault();
         this.setState({ loading: true });
-        const formData = {};
-        for (let formElementIdentifier in this.state.salesForm) {
-            formData[formElementIdentifier] = this.state.salesForm[formElementIdentifier].value;
-        }
-        // const submission = {
-        //     formData: formData
-        // }
+        const formData = {
+            Id: this.state.id,
+            ProductId: this.state.product,
+            CustomerId: this.state.customer,
+            SalespersonId: this.state.salesperson,
+            SalesDate: this.state.salesDate
+
+        };
         const pathname = this.props.location.pathname;
         console.log(formData);
-        axios.put(
+        axios.post(
             '/api/Sales/' + pathname.substring(pathname.lastIndexOf('/'), pathname.length), formData)
             .then(response => {
                 this.setState({ loading: false });
-                this.props.history.push('/');
+                this.props.history.push('/sales');
             })
             .catch(error => {
                 console.log(error);
@@ -139,7 +149,7 @@ class SalesEdit extends Component {
                         <li>
                             <select name="Product"
                                 defaultValue=""
-                                onChange={(event) => this.inputChangeHandler(event, 'Product')}>
+                                onChange={(event) => this.productChangeHandler(event)}>
                                 { products.map(p => {
                                         return (
                                             <option key={'product'+p.value} value={p.value}>{p.label}</option>
@@ -154,7 +164,7 @@ class SalesEdit extends Component {
                         <li>
                             <select name="Customer"
                                 defaultValue=""
-                                onChange={(event) => this.inputChangeHandler(event, 'Customer')}>
+                                onChange={(event) => this.customerChangeHandler(event)}>
                                 { customers.map(p => {
                                         return (
                                             <option key={'customer'+p.value} value={p.value}>{p.label}</option>
@@ -169,7 +179,7 @@ class SalesEdit extends Component {
                         <li>
                             <select name="Salesperson"
                                 defaultValue=""
-                                onChange={(event) => this.inputChangeHandler(event, 'Salesperson')}>
+                                onChange={(event) => this.salespersonChangeHandler(event)}>
                                 { salespersons.map(p => {
                                         return (
                                             <option key={'salesperson'+p.value} value={p.value}>{p.label}</option>
@@ -185,8 +195,8 @@ class SalesEdit extends Component {
                             <DatePicker
                                 name="SalesDate" 
                                 defaultValue="" 
-                                selected={this.state.sales.date}
-                                onChange={(event) => this.inputChangeHandler(event, 'SalesDate')} />
+                                selected={this.state.salesDate}
+                                onChange={this.salesdateChangeHandler} />
                         </li>
                     </ul>
                 </li>

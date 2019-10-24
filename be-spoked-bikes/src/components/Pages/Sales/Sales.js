@@ -11,6 +11,22 @@ import Button from '../../UI/Button/Button';
 class Salespersons extends Component {
 
     state = {
+        Id: null,
+        SalesDate: null,
+        Customer: {
+            FirstName: null,
+            LastName: null
+        },
+        Product: {
+            Name: null,
+            Manufacturer: null,
+            Style: null,
+            PurchasePrice: null
+        },
+        Salesperson: {
+            FirstName: null,
+            LastName: null
+        },
         sales: null,
         selectedSale: null,
         loading: true,
@@ -21,7 +37,10 @@ class Salespersons extends Component {
     componentDidMount () {
         axios.get('/api/Sales')
             .then(response => {
-                this.setState({ sales: response.data });
+                this.setState({ 
+                    sales: response.data 
+                });
+                console.log(response.data);
             })
             .catch(error => {
                 this.setState({ error: true })
@@ -59,10 +78,10 @@ class Salespersons extends Component {
                                 //console.log("salesperson: ", salesperson);
                                 return (
                                     <ul key={sale.Id}>
-                                        <li>{sale.FirstName}</li>
-                                        <li>{sale.LastName}</li>
-                                        <li>{sale.Address}</li>
-                                        <li>{sale.Phone}</li>
+                                        <li>{sale.ProductId}</li>
+                                        <li>{sale.CustomerId}</li>
+                                        <li>{sale.SalesPersonId}</li>
+                                        <li>{sale.SalesDate}</li>
                                         <li>
                                             <NavLink to={'/sale/' + sale.Id }>Edit</NavLink>
                                         </li>

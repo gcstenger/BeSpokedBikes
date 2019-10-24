@@ -8,6 +8,14 @@ import classes from './ProductsEdit.module.css';
 class ProductsEdit extends Component {
 
     state = {
+        id: null,
+        name: null,
+        manufacturer: null,
+        style: null,
+        purchasePrice: null,
+        salePrice: null,
+        qtyOnHand: null,
+        commissionPercentage: 0,
         product: null,
         error: false
     }
@@ -17,6 +25,7 @@ class ProductsEdit extends Component {
         const pathname = this.props.location.pathname;
         axios.get('/api/Products/' + pathname.substring(pathname.lastIndexOf('/'), pathname.length))
             .then(response => {
+                console.log(response.data);
                 this.setState({ product: response.data });
             })
             .catch(error => {
@@ -24,6 +33,35 @@ class ProductsEdit extends Component {
                 this.setState({ error: true })
             });
     }
+
+    productNameChangeHandler = (event) => {
+        this.setState({ name: event.target.value });
+    }
+
+    productManufacturerChangeHandler = (event) => {
+        this.setState({ manufacturer: event.target.value });
+    }
+
+    productStyleChangeHandler = (event) => {
+        this.setState({ style: event.target.value });
+    }
+
+    productPurchasePriceChangeHandler = (event) => {
+        this.setState({ purchasePrice: event.target.value });
+    }
+
+    productSalePriceChangeHandler = (event) => {
+        this.setState({ salePrice: event.target.value });
+    }
+
+    productQtyOnHandChangeHandler = (event) => {
+        this.setState({ qtyOnHand: event.target.value });
+    }
+
+    productCommissionPercentageChangeHandler = (event) => {
+        this.setState({ commissionPercentage: event.target.value });
+    }
+
     inputChangeHandler = (event, id) => {
         // var stateObject = function() {
         //     let returnObj = {
@@ -50,20 +88,16 @@ class ProductsEdit extends Component {
     }
 
     submitHandler = ( event ) => {
-        this.state.inputs.map( function(item, i) {
-          console.log(ReactDOM.findDOMNode(this.refs['input-' + i]).value);
-        }.bind(this))
+        const formData = {
+            Id: this.state.id,
+            ProductId: this.state.product,
+            CustomerId: this.state.customer,
+            SalespersonId: this.state.salesperson,
+            SalesDate: this.state.salesDate
 
-        event.preventDefault();
-        this.setState({ loading: true });
-        const formData = {};
-        for (let formElementIdentifier in this.state.salesForm) {
-            formData[formElementIdentifier] = this.state.salesForm[formElementIdentifier].value;
-        }
-        const submission = {
-            formData: formData
-        }
+        };
         const pathname = this.props.location.pathname;
+        console.log(formData);
         console.log(formData);
         axios.put(
             '/api/Sales/' + pathname.substring(pathname.lastIndexOf('/'), pathname.length), formData)
@@ -89,31 +123,31 @@ class ProductsEdit extends Component {
                     <li>
                         <ul>
                             <li>Name:</li>
-                            <li><input type="text" name="Name" defaultValue={this.state.product.Name} onChange={(event) => this.inputChangeHandler(event, 'Name')} /></li>
+                            <li><input type="text" name="Name" defaultValue={this.state.product.Name} onChange={(event) => this.productNameChangeHandler(event)} /></li>
                         </ul>
                         <ul>
                             <li>Manufacturer:</li>
-                            <li><input type="text" name="Manufacturer" defaultValue={this.state.product.Manufacturer} onChange={this.inputChangeHandler} /></li>
+                            <li><input type="text" name="Manufacturer" defaultValue={this.state.product.Manufacturer} onChange={(event) => this.productManufacturerChangeHandler(event)} /></li>
                         </ul>
                         <ul>
                             <li>Style:</li>
-                            <li><input type="text" name="Style" defaultValue={this.state.product.Style} onChange={this.inputChangeHandler} /></li>
+                            <li><input type="text" name="Style" defaultValue={this.state.product.Style} onChange={(event) => this.productStyleChangeHandler(event)} /></li>
                         </ul>
                         <ul>
                             <li>Purchase Price:</li>
-                            <li><input type="text" name="PurchasePrice" defaultValue={this.state.product.PurchasePrice} onChange={this.inputChangeHandler} /></li>
+                            <li><input type="text" name="PurchasePrice" defaultValue={this.state.product.PurchasePrice} onChange={(event) => this.productPurchasePriceChangeHandler(event)} /></li>
                         </ul>
                         <ul>
                             <li>Sale Price:</li>
-                            <li><input type="text" name="SalePrice" defaultValue={this.state.product.SalePrice} onChange={this.inputChangeHandler} /></li>
+                            <li><input type="text" name="SalePrice" defaultValue={this.state.product.SalePrice} onChange={(event) => this.productSalePriceChangeHandler(event)} /></li>
                         </ul>
                         <ul>
                             <li>Qty on Hand:</li>
-                            <li><input type="number" name="QtyOnHand" defaultValue={this.state.product.QtyOnHand} onChange={this.inputChangeHandler} /></li>
+                            <li><input type="number" name="QtyOnHand" defaultValue={this.state.product.QtyOnHand} onChange={(event) => this.productQtyOnHandChangeHandler(event)} /></li>
                         </ul>
                         <ul>
                             <li>Commission %:</li>
-                            <li><input type="number" name="CommissionPercentage" defaultValue={this.state.product.CommissionPercentage} onChange={this.inputChangeHandler} /></li>
+                            <li><input type="number" name="CommissionPercentage" defaultValue={this.state.product.CommissionPercentage} onChange={(event) => this.productCommissionPercentageChangeHandler(event)} /></li>
                         </ul>
                     </li>
                 </ul>

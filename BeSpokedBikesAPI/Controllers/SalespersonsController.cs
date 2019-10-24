@@ -22,6 +22,7 @@ namespace BeSpokedBikes.Controllers
         // GET: api/Salespersons
         public IQueryable<Salesperson> GetSalespersons()
         {
+            db.Configuration.ProxyCreationEnabled = false;
             return db.Salespersons;
         }
 

@@ -10,9 +10,12 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using BeSpokedBikes;
+using System.Web.Http.Cors;
 
 namespace BeSpokedBikes.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+
     public class DiscountsController : ApiController
     {
         private BeSpokedBikesEntities db = new BeSpokedBikesEntities();
@@ -20,6 +23,7 @@ namespace BeSpokedBikes.Controllers
         // GET: api/Discounts
         public IQueryable<Discount> GetDiscounts()
         {
+            db.Configuration.ProxyCreationEnabled = false;
             return db.Discounts;
         }
 
